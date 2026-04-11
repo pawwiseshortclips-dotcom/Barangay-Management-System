@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - Barangay System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/">Barangay System</a>
+            <div class="navbar-nav flex-row flex-wrap align-items-center">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/residents">Residents</a>
+                <a class="nav-link" href="/certificates">Certificates</a>
+                <a class="nav-link" href="/announcements">Announcements</a>
+                <a class="nav-link" href="/attendance">Attendance</a>
+                <a class="nav-link" href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Attendance Management</h1>
+        <h3>Record Attendance</h3>
+        <form method="POST" action="/add_attendance">
+            <div class="mb-3">
+                <label for="event_name" class="form-label">Event Name</label>
+                <input type="text" class="form-control" id="event_name" name="event_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="resident_id" class="form-label">Resident</label>
+                <select class="form-control" id="resident_id" name="resident_id" required>
+                    {% for resident in residents %}
+                    <option value="{{ resident.id }}">{{ resident.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-control" id="status" name="status" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Record Attendance</button>
+        </form>
+
+        <h3 class="mt-4">Attendance Records</h3>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-success">{{ messages[0] }}</div>
+        {% endif %}
+        {% endwith %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Event</th>
+                    <th>Resident</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in attendance %}
+                <tr>
+                    <td>{{ record.id }}</td>
+                    <td>{{ record.event_name }}</td>
+                    <td>{{ record.resident_name }}</td>
+                    <td><span class="status-badge status-{{ record.status.lower() }}">{{ record.status }}</span></td>
+                    <td>{{ record.date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

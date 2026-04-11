@@ -1,0 +1,350 @@
+/* Simplified Winter Chill Palette and cleaner interface */
+
+:root {
+    --light: #c8eff3;
+    --soft: #82b5b7;
+    --medium: #5a8b8e;
+    --dark: #1f3538;
+    --deep: #0d2628;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.015em;
+    line-height: 1.6;
+    background: linear-gradient(180deg, var(--light), var(--soft));
+    min-height: 100vh;
+    margin: 0;
+    color: var(--deep);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 1160px;
+    background: var(--light);
+    border-radius: 18px;
+    padding: 28px;
+    margin: 24px auto;
+    box-shadow: 0 12px 30px rgba(13, 38, 40, 0.15);
+}
+
+h1, h2, h3 {
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+}
+
+h1 {
+    font-weight: 700;
+}
+
+h2, h3 {
+    font-weight: 600;
+}
+
+/* Navigation */
+.navbar {
+    background: var(--deep);
+    border: none;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 6px 18px rgba(13, 38, 40, 0.18);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.45rem;
+    color: var(--light) !important;
+}
+
+.navbar-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+.navbar-nav .nav-link {
+    color: var(--light) !important;
+    font-weight: 600;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(200, 239, 243, 0.15);
+    white-space: nowrap;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    background: rgba(200, 239, 243, 0.35);
+    color: var(--light) !important;
+}
+
+/* Headings */
+h1 {
+    color: var(--deep);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+h2, h3 {
+    color: var(--medium);
+    font-weight: 600;
+    margin-top: 28px;
+    margin-bottom: 18px;
+}
+
+/* Cards */
+.card {
+    border: 1px solid rgba(90, 139, 142, 0.18);
+    border-radius: 16px;
+    margin-bottom: 22px;
+}
+
+.card-body {
+    padding: 24px;
+}
+
+.card-title {
+    color: var(--dark);
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.card-text {
+    color: var(--deep);
+    line-height: 1.65;
+}
+
+/* Forms */
+.form-control,
+.form-select {
+    border: 1px solid rgba(90, 139, 142, 0.35);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 0.98rem;
+    background: rgba(255, 255, 255, 0.98);
+    color: var(--deep);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--medium);
+    box-shadow: none;
+    outline: none;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--deep);
+    margin-bottom: 8px;
+}
+
+.btn {
+    border-radius: 999px;
+    padding: 12px 28px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--medium);
+    color: var(--light);
+}
+
+.btn-primary:hover {
+    background: var(--dark);
+}
+
+.btn-secondary {
+    background: var(--soft);
+    color: var(--deep);
+}
+
+.btn-secondary:hover {
+    background: rgba(130, 181, 183, 0.9);
+}
+
+.btn-sm {
+    padding: 8px 18px;
+    font-size: 0.88rem;
+}
+
+/* Tables */
+.table {
+    background: rgba(248, 255, 255, 0.96);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.table thead th {
+    background: var(--dark);
+    color: var(--light);
+    font-weight: 600;
+    border: none;
+    padding: 14px 16px;
+    text-transform: uppercase;
+    font-size: 0.88rem;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid rgba(90, 139, 142, 0.14);
+}
+
+.table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table td {
+    padding: 14px 16px;
+    border: none;
+    vertical-align: middle;
+    color: var(--deep);
+}
+
+.table tbody tr:hover {
+    background: rgba(200, 239, 243, 0.35);
+}
+
+/* Alerts */
+.alert {
+    border-radius: 12px;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    background: rgba(90, 139, 142, 0.15);
+    color: var(--dark);
+    border: 1px solid rgba(90, 139, 142, 0.4);
+}
+
+.alert-danger {
+    background: rgba(31, 53, 56, 0.15);
+    color: var(--deep);
+    border: 1px solid rgba(31, 53, 56, 0.3);
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background: rgba(130, 181, 183, 0.25);
+    color: var(--dark);
+}
+
+.status-approved {
+    background: rgba(90, 139, 142, 0.25);
+    color: var(--dark);
+}
+
+.status-rejected {
+    background: rgba(31, 53, 56, 0.25);
+    color: var(--light);
+}
+
+.status-present {
+    background: rgba(90, 139, 142, 0.25);
+    color: var(--dark);
+}
+
+.status-absent {
+    background: rgba(31, 53, 56, 0.25);
+    color: var(--light);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        margin: 14px;
+        padding: 22px;
+    }
+
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-nav .nav-link {
+        margin: 6px 0;
+        display: block;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #2980b9 0%, #21618c 100%);
+}
+
+/* Animation for page load */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Status badges */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background: #f39c12;
+    color: white;
+}
+
+.status-approved {
+    background: #27ae60;
+    color: white;
+}
+
+.status-rejected {
+    background: #e74c3c;
+    color: white;
+}
+
+.status-present {
+    background: #27ae60;
+    color: white;
+}
+
+.status-absent {
+    background: #e74c3c;
+    color: white;
+}

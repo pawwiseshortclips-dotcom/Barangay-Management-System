@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificates - Barangay System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/">Barangay System</a>
+            <div class="navbar-nav flex-row flex-wrap align-items-center">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/residents">Residents</a>
+                <a class="nav-link" href="/certificates">Certificates</a>
+                <a class="nav-link" href="/announcements">Announcements</a>
+                <a class="nav-link" href="/attendance">Attendance</a>
+                <a class="nav-link" href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Certificate Requests</h1>
+        <h3>Request New Certificate</h3>
+        <form method="POST" action="/request_certificate">
+            <div class="mb-3">
+                <label for="resident_id" class="form-label">Resident</label>
+                <select class="form-control" id="resident_id" name="resident_id" required>
+                    {% for resident in residents %}
+                    <option value="{{ resident.id }}">{{ resident.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label">Certificate Type</label>
+                <select class="form-control" id="type" name="type" required>
+                    <option value="Barangay Clearance">Barangay Clearance</option>
+                    <option value="Indigency">Indigency</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Request Certificate</button>
+        </form>
+
+        <h3 class="mt-4">All Requests</h3>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-success">{{ messages[0] }}</div>
+        {% endif %}
+        {% endwith %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Resident</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Request Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cert in certificates %}
+                <tr>
+                    <td>{{ cert.id }}</td>
+                    <td>{{ cert.resident_name }}</td>
+                    <td>{{ cert.type }}</td>
+                    <td><span class="status-badge status-{{ cert.status.lower() }}">{{ cert.status }}</span></td>
+                    <td>{{ cert.request_date }}</td>
+                    <td>
+                        <form method="POST" action="/update_certificate/{{ cert.id }}" style="display:inline;">
+                            <select name="status" class="form-select form-select-sm" style="width:auto; display:inline;">
+                                <option value="Pending" {% if cert.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option value="Approved" {% if cert.status == 'Approved' %}selected{% endif %}>Approved</option>
+                                <option value="Rejected" {% if cert.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
