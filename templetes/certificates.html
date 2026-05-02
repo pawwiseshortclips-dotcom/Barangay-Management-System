@@ -13,11 +13,12 @@
             <a class="navbar-brand" href="/">Barangay System</a>
             <div class="navbar-nav flex-row flex-wrap align-items-center">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/residents">Residents</a>
-                <a class="nav-link" href="/certificates">Certificates</a>
-                <a class="nav-link" href="/announcements">Announcements</a>
-                <a class="nav-link" href="/attendance">Attendance</a>
-                <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link" href="/admin/residents">Residents</a>
+                <a class="nav-link" href="/admin/certificates">Certificates</a>
+                <a class="nav-link" href="/admin/announcements">Announcements</a>
+                <a class="nav-link" href="/admin/attendance">Attendance</a>
+                <a class="nav-link" href="/admin/resident_requests">Resident Requests</a>
+                <a class="nav-link" href="/admin/logout">Logout</a>
             </div>
         </div>
     </nav>
@@ -25,7 +26,7 @@
     <div class="container mt-4">
         <h1>Certificate Requests</h1>
         <h3>Request New Certificate</h3>
-        <form method="POST" action="/request_certificate">
+        <form method="POST" action="/admin/request_certificate">
             <div class="mb-3">
                 <label for="resident_id" class="form-label">Resident</label>
                 <select class="form-control" id="resident_id" name="resident_id" required>
@@ -70,7 +71,7 @@
                     <td><span class="status-badge status-{{ cert.status.lower() }}">{{ cert.status }}</span></td>
                     <td>{{ cert.request_date }}</td>
                     <td>
-                        <form method="POST" action="/update_certificate/{{ cert.id }}" style="display:inline;">
+                        <form method="POST" action="/admin/update_certificate/{{ cert.id }}" style="display:inline;">
                             <select name="status" class="form-select form-select-sm" style="width:auto; display:inline;">
                                 <option value="Pending" {% if cert.status == 'Pending' %}selected{% endif %}>Pending</option>
                                 <option value="Approved" {% if cert.status == 'Approved' %}selected{% endif %}>Approved</option>

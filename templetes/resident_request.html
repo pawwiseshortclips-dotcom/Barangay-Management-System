@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resident Request - Barangay System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .uppercase-input {
+            text-transform: uppercase;
+        }
+        .uppercase-input::placeholder {
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="/">Barangay System</a>
+            <div class="navbar-nav flex-row flex-wrap align-items-center">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/resident_portal">Resident Request</a>
+                {% if session.admin_logged_in %}
+                <a class="nav-link" href="/admin/logout">Logout</a>
+                {% else %}
+                <a class="nav-link" href="/admin/login">Admin Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>Resident Request Form</h1>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-success">{{ messages[0] }}</div>
+        {% endif %}
+        {% endwith %}
+        <p>Please fill out your details and select what you need from the barangay office.</p>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control uppercase-input" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="age" class="form-label">Age</label>
+                <input type="number" class="form-control uppercase-input" id="age" name="age">
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" class="form-control uppercase-input" id="address" name="address" required>
+            </div>
+            <div class="mb-3">
+                <label for="contact" class="form-label">Contact</label>
+                <input type="text" class="form-control uppercase-input" id="contact" name="contact" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="request_type" class="form-label">Request Type</label>
+                <select class="form-select" id="request_type" name="request_type" required>
+                    <option value="Certificate">Certificate</option>
+                    <option value="Attendance">Attendance</option>
+                    <option value="Assistance">Assistance</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Details</label>
+                <textarea class="form-control uppercase-input" id="message" name="message" rows="4" placeholder="Describe what you need"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Request</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.uppercase-input').forEach(function(element) {
+            element.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        });
+    </script>
+</body>
+</html>

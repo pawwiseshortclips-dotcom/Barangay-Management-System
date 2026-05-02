@@ -13,11 +13,12 @@
             <a class="navbar-brand" href="/">Barangay System</a>
             <div class="navbar-nav flex-row flex-wrap align-items-center">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/residents">Residents</a>
-                <a class="nav-link" href="/certificates">Certificates</a>
-                <a class="nav-link" href="/announcements">Announcements</a>
-                <a class="nav-link" href="/attendance">Attendance</a>
-                <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link" href="/admin/residents">Residents</a>
+                <a class="nav-link" href="/admin/certificates">Certificates</a>
+                <a class="nav-link" href="/admin/announcements">Announcements</a>
+                <a class="nav-link" href="/admin/attendance">Attendance</a>
+                <a class="nav-link" href="/admin/resident_requests">Resident Requests</a>
+                <a class="nav-link" href="/admin/logout">Logout</a>
             </div>
         </div>
     </nav>
@@ -41,8 +42,12 @@
                 <label for="contact" class="form-label">Contact</label>
                 <input type="text" class="form-control" id="contact" name="contact" required>
             </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
             <button type="submit" class="btn btn-primary">Add Resident</button>
-            <a href="/residents" class="btn btn-secondary">Cancel</a>
+            <a href="/admin/residents" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 

@@ -13,11 +13,12 @@
             <a class="navbar-brand" href="/">Barangay System</a>
             <div class="navbar-nav flex-row flex-wrap align-items-center">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/residents">Residents</a>
-                <a class="nav-link" href="/certificates">Certificates</a>
-                <a class="nav-link" href="/announcements">Announcements</a>
-                <a class="nav-link" href="/attendance">Attendance</a>
-                <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link" href="/admin/residents">Residents</a>
+                <a class="nav-link" href="/admin/certificates">Certificates</a>
+                <a class="nav-link" href="/admin/announcements">Announcements</a>
+                <a class="nav-link" href="/admin/attendance">Attendance</a>
+                <a class="nav-link" href="/admin/resident_requests">Resident Requests</a>
+                <a class="nav-link" href="/admin/logout">Logout</a>
             </div>
         </div>
     </nav>
@@ -25,7 +26,7 @@
     <div class="container mt-4">
         <h1>Announcements Management</h1>
         <h3>Add New Announcement</h3>
-        <form method="POST" action="/add_announcement">
+        <form method="POST" action="/admin/add_announcement">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" name="title" required>

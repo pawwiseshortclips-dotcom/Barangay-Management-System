@@ -13,14 +13,16 @@
             <a class="navbar-brand" href="/">Barangay System</a>
             <div class="navbar-nav flex-row flex-wrap align-items-center">
                 <a class="nav-link" href="/">Home</a>
-                {% if session.logged_in %}
-                <a class="nav-link" href="/residents">Residents</a>
-                <a class="nav-link" href="/certificates">Certificates</a>
-                <a class="nav-link" href="/announcements">Announcements</a>
-                <a class="nav-link" href="/attendance">Attendance</a>
-                <a class="nav-link" href="/logout">Logout</a>
+                {% if session.admin_logged_in %}
+                <a class="nav-link" href="/admin/residents">Residents</a>
+                <a class="nav-link" href="/admin/certificates">Certificates</a>
+                <a class="nav-link" href="/admin/announcements">Announcements</a>
+                <a class="nav-link" href="/admin/attendance">Attendance</a>
+                <a class="nav-link" href="/admin/resident_requests">Resident Requests</a>
+                <a class="nav-link" href="/admin/logout">Logout</a>
                 {% else %}
-                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="/resident_portal">Resident Request</a>
+                <a class="nav-link" href="/admin/login">Admin Login</a>
                 {% endif %}
             </div>
         </div>
@@ -28,6 +30,11 @@
 
     <div class="container mt-4">
         <h1>Welcome to Barangay Management System</h1>
+        {% if not session.admin_logged_in %}
+        <div class="mb-4">
+            <a class="btn btn-success" href="/resident_portal">Resident Request Form</a>
+        </div>
+        {% endif %}
         <h2>Announcements</h2>
         {% for announcement in announcements %}
         <div class="card mb-3">

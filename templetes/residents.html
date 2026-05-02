@@ -13,18 +13,19 @@
             <a class="navbar-brand" href="/">Barangay System</a>
             <div class="navbar-nav flex-row flex-wrap align-items-center">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/residents">Residents</a>
-                <a class="nav-link" href="/certificates">Certificates</a>
-                <a class="nav-link" href="/announcements">Announcements</a>
-                <a class="nav-link" href="/attendance">Attendance</a>
-                <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link" href="/admin/residents">Residents</a>
+                <a class="nav-link" href="/admin/certificates">Certificates</a>
+                <a class="nav-link" href="/admin/announcements">Announcements</a>
+                <a class="nav-link" href="/admin/attendance">Attendance</a>
+                <a class="nav-link" href="/admin/resident_requests">Resident Requests</a>
+                <a class="nav-link" href="/admin/logout">Logout</a>
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
         <h1>Residents Management</h1>
-        <a href="/add_resident" class="btn btn-primary mb-3">Add New Resident</a>
+        <a href="/admin/add_resident" class="btn btn-primary mb-3">Add New Resident</a>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div class="alert alert-success">{{ messages[0] }}</div>
@@ -38,6 +39,7 @@
                     <th>Age</th>
                     <th>Address</th>
                     <th>Contact</th>
+                    <th>Email</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,6 +50,7 @@
                     <td>{{ resident.age }}</td>
                     <td>{{ resident.address }}</td>
                     <td>{{ resident.contact }}</td>
+                    <td>{{ resident.email }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

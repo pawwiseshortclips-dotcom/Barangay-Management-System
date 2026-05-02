@@ -11,7 +11,8 @@ def create_database():
             name TEXT NOT NULL,
             age INTEGER,
             address TEXT,
-            contact TEXT
+            contact TEXT,
+            email TEXT
         )
     ''')
 
@@ -44,6 +45,7 @@ def create_database():
             event_name TEXT NOT NULL,
             resident_id INTEGER,
             status TEXT,
+            approval_status TEXT DEFAULT 'Pending',
             date TEXT,
             FOREIGN KEY (resident_id) REFERENCES residents (id)
         )
@@ -55,6 +57,22 @@ def create_database():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE,
             password TEXT
+        )
+    ''')
+
+    # Create resident requests table for public resident submissions
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS resident_requests (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            age INTEGER,
+            address TEXT,
+            contact TEXT,
+            email TEXT,
+            request_type TEXT,
+            message TEXT,
+            status TEXT DEFAULT 'Pending',
+            date TEXT
         )
     ''')
 
