@@ -30,6 +30,57 @@ body {
     box-shadow: 0 12px 30px rgba(13, 38, 40, 0.15);
 }
 
+/* Full-width hero card for improved visual */
+.hero-card {
+    max-width: 1100px;
+    margin: 28px auto;
+    padding: 36px 48px;
+    background: rgba(200, 239, 243, 0.95);
+    border-radius: 18px;
+    box-shadow: 0 18px 40px rgba(13, 38, 40, 0.12);
+}
+
+.hero-card h1 {
+    font-size: 3rem;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.hero-cta {
+    display: inline-block;
+    background: #1f8a56;
+    color: white;
+    padding: 12px 26px;
+    border-radius: 40px;
+    font-weight: 700;
+    text-decoration: none;
+    margin-bottom: 14px;
+}
+
+/* Make navbar sticky on top and horizontally scrollable on small screens */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-nav {
+    gap: 0.6rem;
+    overflow-x: auto;
+}
+
+.navbar-nav .nav-link {
+    background: rgba(255,255,255,0.12);
+    padding: 8px 14px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+}
+
+/* Responsive table wrapper */
+.table-responsive {
+    overflow-x: auto;
+}
+
 h1, h2, h3 {
     letter-spacing: 0.02em;
     line-height: 1.2;
@@ -45,10 +96,16 @@ h2, h3 {
 
 /* Navigation */
 .navbar {
+    position: relative;
+    z-index: 1000;
     background: var(--deep);
     border: none;
     border-radius: 0 0 14px 14px;
     box-shadow: 0 6px 18px rgba(13, 38, 40, 0.18);
+}
+
+.navbar-nav .nav-link {
+    cursor: pointer;
 }
 
 .navbar-brand {

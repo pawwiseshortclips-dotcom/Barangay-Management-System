@@ -10,15 +10,18 @@
 <body>
     <nav class="navbar navbar-dark bg-primary">
         <div class="container-fluid px-4">
-            <a class="navbar-brand" href="/">Barangay System</a>
+            <a class="navbar-brand" href="/">Barangay Request System</a>
             <div class="navbar-nav flex-row flex-wrap align-items-center">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/admin/residents">Residents</a>
-                <a class="nav-link" href="/admin/certificates">Certificates</a>
-                <a class="nav-link" href="/admin/announcements">Announcements</a>
-                <a class="nav-link" href="/admin/attendance">Attendance</a>
-                <a class="nav-link" href="/admin/resident_requests">Resident Requests</a>
-                <a class="nav-link" href="/admin/logout">Logout</a>
+                <!-- Resident Request link removed from navbar -->
+                <a class="nav-link" href="/resident_requests">Resident Requests {% if pending_requests_count > 0 %}<span class="badge rounded-pill bg-danger">{{ pending_requests_count }}</span>{% endif %}</a>
+                <a class="nav-link" href="/announcements">Announcements</a>
+                <a class="nav-link" href="/track">Track Request</a>
+                {% if session.admin_logged_in or session.logged_in %}
+                <a class="nav-link" href="/logout">Logout</a>
+                {% else %}
+                <a class="nav-link" href="/admin/login">Admin Login</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -26,7 +29,7 @@
     <div class="container mt-4">
         <h1>Announcements Management</h1>
         <h3>Add New Announcement</h3>
-        <form method="POST" action="/admin/add_announcement">
+        <form method="POST" action="/add_announcement">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" name="title" required>
@@ -49,7 +52,14 @@
             <div class="card-body">
                 <h5 class="card-title">{{ announcement.title }}</h5>
                 <p class="card-text">{{ announcement.description }}</p>
-                <small class="text-muted">{{ announcement.date }}</small>
+                <div class="d-flex justify-content-between align-items-start">
+                    <small class="text-muted">{{ announcement.date }}</small>
+                    {% if session.admin_logged_in or session.logged_in %}
+                    <form method="POST" action="{{ url_for('delete_announcement', id=announcement.id) }}" class="ms-2" onsubmit="return confirm('Are you sure you want to delete this announcement?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                    {% endif %}
+                </div>
             </div>
         </div>
         {% endfor %}

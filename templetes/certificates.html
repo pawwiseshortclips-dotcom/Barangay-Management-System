@@ -10,40 +10,25 @@
 <body>
     <nav class="navbar navbar-dark bg-primary">
         <div class="container-fluid px-4">
-            <a class="navbar-brand" href="/">Barangay System</a>
+            <a class="navbar-brand" href="/">Barangay Request System</a>
             <div class="navbar-nav flex-row flex-wrap align-items-center">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/admin/residents">Residents</a>
-                <a class="nav-link" href="/admin/certificates">Certificates</a>
-                <a class="nav-link" href="/admin/announcements">Announcements</a>
-                <a class="nav-link" href="/admin/attendance">Attendance</a>
-                <a class="nav-link" href="/admin/resident_requests">Resident Requests</a>
-                <a class="nav-link" href="/admin/logout">Logout</a>
+                <!-- Resident Request link removed from navbar -->
+                <a class="nav-link" href="/resident_requests">Resident Requests {% if pending_requests_count > 0 %}<span class="badge rounded-pill bg-danger">{{ pending_requests_count }}</span>{% endif %}</a>
+                <a class="nav-link" href="/announcements">Announcements</a>
+                <a class="nav-link" href="/track">Track Request</a>
+                {% if session.admin_logged_in or session.logged_in %}
+                <a class="nav-link" href="/logout">Logout</a>
+                {% else %}
+                <a class="nav-link" href="/admin/login">Admin Login</a>
+                {% endif %}
             </div>
         </div>
     </nav>
 
     <div class="container mt-4">
         <h1>Certificate Requests</h1>
-        <h3>Request New Certificate</h3>
-        <form method="POST" action="/admin/request_certificate">
-            <div class="mb-3">
-                <label for="resident_id" class="form-label">Resident</label>
-                <select class="form-control" id="resident_id" name="resident_id" required>
-                    {% for resident in residents %}
-                    <option value="{{ resident.id }}">{{ resident.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="type" class="form-label">Certificate Type</label>
-                <select class="form-control" id="type" name="type" required>
-                    <option value="Barangay Clearance">Barangay Clearance</option>
-                    <option value="Indigency">Indigency</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Request Certificate</button>
-        </form>
+        <!-- Certificate request form removed per UI update -->
 
         <h3 class="mt-4">All Requests</h3>
         {% with messages = get_flashed_messages() %}
@@ -71,7 +56,7 @@
                     <td><span class="status-badge status-{{ cert.status.lower() }}">{{ cert.status }}</span></td>
                     <td>{{ cert.request_date }}</td>
                     <td>
-                        <form method="POST" action="/admin/update_certificate/{{ cert.id }}" style="display:inline;">
+                        <form method="POST" action="/update_certificate/{{ cert.id }}" style="display:inline;">
                             <select name="status" class="form-select form-select-sm" style="width:auto; display:inline;">
                                 <option value="Pending" {% if cert.status == 'Pending' %}selected{% endif %}>Pending</option>
                                 <option value="Approved" {% if cert.status == 'Approved' %}selected{% endif %}>Approved</option>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resident Request - Barangay System</title>
+    <title>Resident Request Form - Barangay Request System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
@@ -13,15 +13,33 @@
         .uppercase-input::placeholder {
             text-transform: uppercase;
         }
+        .tracking-code-box {
+            background: #e9f7ff;
+            border: 1px solid #0d6efd;
+            color: #0d6efd;
+            padding: 14px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .tracking-code-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-dark bg-primary">
         <div class="container-fluid px-4">
-            <a class="navbar-brand" href="/">Barangay System</a>
+            <a class="navbar-brand" href="/">Barangay Request System</a>
             <div class="navbar-nav flex-row flex-wrap align-items-center">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/resident_portal">Resident Request</a>
+                <!-- Resident Request link removed to avoid duplication with page heading -->
+                <a class="nav-link" href="/track">Track Request</a>
                 {% if session.admin_logged_in %}
                 <a class="nav-link" href="/admin/logout">Logout</a>
                 {% else %}
@@ -31,18 +49,30 @@
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container-fluid mt-4">
         <h1>Resident Request Form</h1>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div class="alert alert-success">{{ messages[0] }}</div>
         {% endif %}
         {% endwith %}
+        {% if tracking_code %}
+        <div class="tracking-code-box">
+            <div>
+                <div class="tracking-code-label">Tracking Code</div>
+                <div class="tracking-code-value">{{ tracking_code }}</div>
+                <div class="text-muted">Copy this code to track your request status.</div>
+            </div>
+            <button type="button" id="copyTrackingCode" class="btn btn-outline-primary btn-sm">Copy</button>
+        </div>
+        {% endif %}
         <p>Please fill out your details and select what you need from the barangay office.</p>
-        <form method="POST">
+        <form method="POST" id="residentRequestForm">
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control uppercase-input" id="name" name="name" required>
+                <input type="text" class="form-control uppercase-input" id="name" name="name" required value="{{ request.form.get('name','') }}">
+                <div class="form-text">Format: FIRST [M.] LAST — middle initial optional (e.g., JUAN P. DELA CRUZ or JUAN DELA CRUZ)</div>
+                <div class="text-danger fw-bold mt-1">Required: Full name (First [M.] Last). Requests without a full name will be automatically declined.</div>
             </div>
             <div class="mb-3">
                 <label for="age" class="form-label">Age</label>
@@ -63,15 +93,19 @@
             <div class="mb-3">
                 <label for="request_type" class="form-label">Request Type</label>
                 <select class="form-select" id="request_type" name="request_type" required>
-                    <option value="Certificate">Certificate</option>
-                    <option value="Attendance">Attendance</option>
-                    <option value="Assistance">Assistance</option>
+                    <option value="Certificate of Clearance">Certificate of Clearance</option>
+                    <option value="Certificate of Residency">Certificate of Residency</option>
+                    <option value="Certificate of Indigency">Certificate of Indigency</option>
+                    <option value="Cedula">Cedula</option>
                     <option value="Other">Other</option>
                 </select>
+                <div id="requestTypeNote" class="alert alert-info mt-3" role="alert">
+                    Piliin ang tamang uri ng request. I-type ang purpose sa Details.
+                </div>
             </div>
             <div class="mb-3">
                 <label for="message" class="form-label">Details</label>
-                <textarea class="form-control uppercase-input" id="message" name="message" rows="4" placeholder="Describe what you need"></textarea>
+                <textarea class="form-control uppercase-input" id="message" name="message" rows="4" placeholder="Describe what you need">{{ request.form.get('message','') }}</textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit Request</button>
         </form>
@@ -84,6 +118,57 @@
                 this.value = this.value.toUpperCase();
             });
         });
+        const requestTypeNote = document.getElementById('requestTypeNote');
+        const requestTypeSelect = document.getElementById('request_type');
+        const requestTypeNotes = {
+            'Certificate of Residency':
+                'Para makakuha ng Certificate of Residency, kailangan ng <strong>Cedula</strong> at <strong>official receipt</strong>. I-type ang <strong>purpose</strong> sa Details.',
+            'Certificate of Clearance':
+                'Para makakuha ng Certificate of Clearance, kailangan ng <strong>Cedula</strong>, <strong>official receipt</strong>, at may <strong>fee</strong> depende sa <strong>purpose</strong>. I-type ang <strong>purpose</strong> sa Details.',
+            'Certificate of Indigency':
+                'Para sa Certificate of Indigency, walang karagdagang requirements. I-type ang <strong>purpose</strong> sa Details.',
+            'Cedula':
+                'Para sa Cedula, may <strong>fee</strong> na depende sa <strong>purpose</strong>. Ilagay ang <strong>purpose</strong> sa Details para maintindihan ang presyo.',
+            'Other':
+                'Ilagay ang purpose ng request sa Details at isumite ang anumang karagdagang dokumentong hinihingi ng barangay.'
+        };
+
+        function updateRequestTypeNote() {
+            const selectedType = requestTypeSelect.value;
+            requestTypeNote.innerHTML = requestTypeNotes[selectedType] || 'Piliin ang tamang uri ng request. I-type ang <strong>purpose</strong> sa Details.';
+        }
+
+        requestTypeSelect.addEventListener('change', updateRequestTypeNote);
+        updateRequestTypeNote();
+
+        // Client-side name format validation: FIRST [M.] LAST (middle initial optional)
+        const form = document.getElementById('residentRequestForm');
+        form.addEventListener('submit', function(e) {
+            const name = document.getElementById('name').value.trim();
+            // Accept FIRST LAST or FIRST M. LAST (middle initial optional)
+            const re = /^[A-Z]+(?:\s+[A-Z](?:\.)?)?\s+[A-Z][A-Z\s'-]*$/;
+            if (!re.test(name)) {
+                e.preventDefault();
+                alert('Please enter your full name as FIRST [M.] LAST. Examples: JUAN P. DELA CRUZ or JUAN DELA CRUZ');
+                document.getElementById('name').focus();
+                return false;
+            }
+        });
+
+        const copyBtn = document.getElementById('copyTrackingCode');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', function() {
+                const codeElement = document.querySelector('.tracking-code-value');
+                if (codeElement) {
+                    navigator.clipboard.writeText(codeElement.textContent.trim()).then(() => {
+                        copyBtn.textContent = 'Copied!';
+                        setTimeout(() => copyBtn.textContent = 'Copy', 2000);
+                    }).catch(() => {
+                        alert('Unable to copy automatically. Please copy the code manually.');
+                    });
+                }
+            });
+        }
     </script>
 </body>
 </html>

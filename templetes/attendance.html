@@ -13,12 +13,11 @@
             <a class="navbar-brand" href="/">Barangay System</a>
             <div class="navbar-nav flex-row flex-wrap align-items-center">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/admin/residents">Residents</a>
-                <a class="nav-link" href="/admin/certificates">Certificates</a>
-                <a class="nav-link" href="/admin/announcements">Announcements</a>
-                <a class="nav-link" href="/admin/attendance">Attendance</a>
-                <a class="nav-link" href="/admin/resident_requests">Resident Requests</a>
-                <a class="nav-link" href="/admin/logout">Logout</a>
+                <a class="nav-link" href="/residents">Residents</a>
+                <a class="nav-link" href="/certificates">Certificates</a>
+                <a class="nav-link" href="/announcements">Announcements</a>
+                <a class="nav-link" href="/attendance">Attendance</a>
+                <a class="nav-link" href="/logout">Logout</a>
             </div>
         </div>
     </nav>
@@ -26,7 +25,7 @@
     <div class="container mt-4">
         <h1>Attendance Management</h1>
         <h3>Record Attendance</h3>
-        <form method="POST" action="/admin/add_attendance">
+        <form method="POST" action="/add_attendance">
             <div class="mb-3">
                 <label for="event_name" class="form-label">Event Name</label>
                 <input type="text" class="form-control" id="event_name" name="event_name" required>
@@ -62,9 +61,7 @@
                     <th>Event</th>
                     <th>Resident</th>
                     <th>Status</th>
-                    <th>Approval</th>
                     <th>Date</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,18 +71,7 @@
                     <td>{{ record.event_name }}</td>
                     <td>{{ record.resident_name }}</td>
                     <td><span class="status-badge status-{{ record.status.lower() }}">{{ record.status }}</span></td>
-                    <td>{{ record.approval_status or 'Pending' }}</td>
                     <td>{{ record.date }}</td>
-                    <td>
-                        {% if record.approval_status == 'Pending' or not record.approval_status %}
-                        <form method="POST" action="{{ url_for('update_attendance_approval', id=record.id) }}" class="d-inline">
-                            <button type="submit" name="action" value="approve" class="btn btn-success btn-sm">Approve</button>
-                            <button type="submit" name="action" value="decline" class="btn btn-danger btn-sm">Decline</button>
-                        </form>
-                        {% else %}
-                        <span class="badge bg-{{ 'success' if record.approval_status == 'Approved' else 'danger' }}">{{ record.approval_status }}</span>
-                        {% endif %}
-                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
