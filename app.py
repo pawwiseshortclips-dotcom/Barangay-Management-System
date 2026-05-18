@@ -370,8 +370,11 @@ def resident_portal():
         if not name_pattern.match(name_raw):
             flash('Invalid name format. Use: FIRST [M.] LAST (middle initial optional).')
             return render_template('resident_request.html', tracking_code=None)
-        tracking_code = uuid.uuid4().hex[:8].upper()
         conn = get_db_connection()
+        year = datetime.now().year
+        seq = conn.execute('SELECT COUNT(*) as cnt FROM resident_requests WHERE date LIKE ?',
+                           (f'{year}%',)).fetchone()['cnt'] + 1
+        tracking_code = f'BRGY-{year}-{seq:03d}'
         conn.execute('INSERT INTO resident_requests (name, age, address, contact, email, request_type, message, date, tracking_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
                      (name, age, address, contact, email, request_type, message, date, tracking_code))
         if request_type and 'certificate' in request_type.lower():

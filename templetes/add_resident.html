@@ -10,14 +10,18 @@
 <body>
     <nav class="navbar navbar-dark bg-primary">
         <div class="container-fluid px-4">
-            <a class="navbar-brand" href="/">Barangay System</a>
+            <a class="navbar-brand" href="/">Barangay Request System</a>
             <div class="navbar-nav flex-row flex-wrap align-items-center">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/residents">Residents</a>
-                <a class="nav-link" href="/certificates">Certificates</a>
+                <!-- Resident Request link removed from navbar -->
+                <a class="nav-link" href="/resident_requests">Resident Requests {% if pending_requests_count > 0 %}<span class="badge rounded-pill bg-danger">{{ pending_requests_count }}</span>{% endif %}</a>
                 <a class="nav-link" href="/announcements">Announcements</a>
-                <a class="nav-link" href="/attendance">Attendance</a>
+                <a class="nav-link" href="/track">Track Request</a>
+                {% if session.admin_logged_in or session.logged_in %}
                 <a class="nav-link" href="/logout">Logout</a>
+                {% else %}
+                <a class="nav-link" href="/admin/login">Admin Login</a>
+                {% endif %}
             </div>
         </div>
     </nav>
